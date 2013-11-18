@@ -27,6 +27,7 @@ def parse_args():
     download_dir = args.dir
 
     if not os.path.isdir(download_dir):
+        # JEFF - maybe add sys.mkdirs call here to create dir
         parser.error('Download directory must exist.')
 
     return file_location, download_dir
@@ -47,6 +48,7 @@ def main():
     client.add_tracker(tracker)
 
     # connect to the peers associated to the tracker
+    # JEFF - have client make this call instead of tracker
     tracker.get_peers_and_connect(client, torrentfile)
     
     reactor.run()

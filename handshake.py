@@ -35,9 +35,12 @@ class Handshake(object):
         start_i = 0
         pstrlen = struct.unpack('B', handshake_str[start_i])[0]
         
-        start_i += SIZE_PSTR_LEN
+        # JEFF - maybe choose a more radically different constant name to not 
+        # confuse with pstrlen variable or...
+        start_i += SIZE_PSTRLEN
         pstr = handshake_str[start_i : pstrlen + start_i]
         
+        # JEFF - do len(pstr) here -- no need for separate var
         start_i += pstrlen
         reserved = handshake_str[start_i : start_i + SIZE_RESERVED_BYTES]
         
@@ -55,11 +58,14 @@ class Handshake(object):
 
 
 def parse_handshake(buffer):
-    if buffer:
-        pstr_len = struct.unpack('B', buffer[0])[0]
-        handshake_size = pstr_len + HANDSHAKE_WITHOUT_PROTOCOL_LEN
-        if handshake_size <= len(buffer):
-            handshake = Handshake(handshake_str = buffer[0:handshake_size])
-            return handshake, buffer[handshake_size:]
-            
-    return None, buffer
+    if not buffer:
+        return None, buffer
+    # JEFF - maybe add method to check that this is the BitTorrent protocol
+    pstr_len = struct.unpack('B', buffer[0])[0]
+    handshake_size = pstr_len + HANDSHAKE_WITHOUT_PROTOCOL_LEN
+
+    if handshake_size <= len(buffer):
+        handshake = Handshake(handshake_str = buffer[0:handshake_size])
+        return handshake, buffer[handshake_size:]
+    else:
+        return None, buffer
