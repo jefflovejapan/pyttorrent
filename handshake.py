@@ -60,7 +60,6 @@ class Handshake(object):
 def parse_handshake(buffer):
     if not buffer:
         return None, buffer
-    # JEFF - maybe add method to check that this is the BitTorrent protocol
     pstr_len = struct.unpack('B', buffer[0])[0]
     handshake_size = pstr_len + HANDSHAKE_WITHOUT_PROTOCOL_LEN
 

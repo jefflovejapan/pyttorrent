@@ -41,6 +41,7 @@ class BitTorrentClient(object):
         return self.curr_bitfield == self.torrentfile.bitfield
 
     def is_piece_valid(self, block, index):
+        # JEFF - change to check for validity before printing
         print 'piece for index=%d is valid' % index
         return sha1(block).digest() == self.torrentfile.get_piece_info_hash(index)
 
@@ -239,6 +240,8 @@ class BitTorrentClient(object):
 
 
     def get_next_piece_index(self, peer_connection):
+        # JEFF - using curr_bitfield.bin.index(0) might make it clearer
+        # that that you're looking for the first "False" piece
         for i, piece in enumerate(self.curr_bitfield):
             if not piece and peer_connection.bitfield[i]:
                 return i

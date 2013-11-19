@@ -33,6 +33,8 @@ def parse_message(buffer):
 
 def parse_message_helper(messages, buffer):
     # JEFF - harder to confuse with msg_len if in all caps / constant
+    # Could use reduce here to create the aggregator and then call out to
+    # a separate function. Fun!
     _msg_length_size = 4
     
     # check for message length

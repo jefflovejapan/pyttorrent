@@ -24,6 +24,7 @@ class TorrentFile(object):
         #   otherwise will represent the final piece_length in bytes
         self.leftover_piece_length = self.length % self.piece_length
 
+        # JEFF - put this logic into get_bitfield function
         # set bitfield
         bitstring = '1' * self.total_pieces
         if self.leftover_piece_length > 0:
